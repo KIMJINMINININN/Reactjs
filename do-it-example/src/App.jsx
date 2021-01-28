@@ -8,7 +8,7 @@ class App extends React.Component{
         return (
             <div>
                 <ChildProperty>
-                    <div><span>자식 노드</span></div>
+                    <div><span>자식 노드!!</span></div>
                 </ChildProperty>
             </div>
         )
