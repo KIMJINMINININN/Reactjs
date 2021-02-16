@@ -8,7 +8,7 @@ class TodoList extends React.PureComponent {
     ];
     return (
       <div>
-        {todoList.map((todo) => (
+        {todoList.map(todo => (
           <div key={todo.taskName}>{todo.taskName}</div>
         ))}
       </div>
