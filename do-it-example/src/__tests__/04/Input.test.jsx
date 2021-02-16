@@ -8,9 +8,12 @@ describe('<Input>', () => {
       shallow(<Input name="test_name" />);
     }).not.toThrow();
   });
-  it('has one element', () => {
+});
+
+describe('contains <input>', () => {
+  it('renders one input', () => {
     const wrapper = shallow(<Input name="test_name" />);
-    expect(wrapper.length).toEqual(1);
-    expect(wrapper).toHaveLength(1);
+    expect(wrapper.find('input')).toHaveLength(1);
+    expect(wrapper.find('label')).toHaveLength(1);
   });
 });
