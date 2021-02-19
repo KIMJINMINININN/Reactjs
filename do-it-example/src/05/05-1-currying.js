@@ -22,16 +22,16 @@
 // const result1 = multiply(3)(3);
 // const result2 = multiply(4)(3)
 
-const equation = (a, b, c) => x => ((x * a) * b) + c;
-const formula = equation(2, 3, 4);
-const x = 10;
-const result = formula(x);
+// const equation = (a, b, c) => x => ((x * a) * b) + c;
+// const formula = equation(2, 3, 4);
+// const x = 10;
+// const result = formula(x);
 
-const a = function (a, b, c){
-    return function (x){
-        return ((x * a) * b) + c;
-    }
-}
+// const a = function (a, b, c){
+//     return function (x){
+//         return ((x * a) * b) + c;
+//     }
+// }
 
 const multiply = (a, b) => a * b;
 const add = (a, b) => a + b;
@@ -45,7 +45,7 @@ const multiplyThree = multiplyX(3);
 
 const formula = x => addFour(multiplyThree(multiplyTwo(x)))
 
-[multiplyTwo, multiplyThree,addFour].reduce(
+[multiplyTwo, multiplyThree, addFour].reduce(
     function(prevFunc, nextFunc){
         return function(value){
             return nextFunc(prevFunc(value))
@@ -53,3 +53,40 @@ const formula = x => addFour(multiplyThree(multiplyTwo(x)))
     },
     function(k) { return k;}
 )
+
+function(value){
+    return multiplyTwo((k => k)(value));
+}
+
+function(value){
+    return multiplyThree(
+        function(value){
+            return multiplyTwo((k => k)(value))
+        }
+    )
+}
+
+function(value){
+    return addFour(
+        function(value){
+            return multiplyThree(
+                function(value){
+                    return multiplyTwo((k => k)(value))
+                }(value)
+            )
+        }(value)
+    )
+}
+
+function compose(funcArr){
+    return funcArry.reduce(
+        function(prevFunc, nextFunc){
+            return function(value){
+                return newFunc(prevFun(value));
+            }
+        },
+        function(k) { return k;}
+    )
+}
+
+const formulaWithCompose = compose([multiplyTwo, multiplyThree, addFour]);

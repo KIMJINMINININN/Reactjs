@@ -6,7 +6,6 @@ class ForceUpdateExample extends React.Component {
     // 상태 정의
     this.loading = true;
     this.formData = 'no data';
-    // 이후 콜백 함수를 다룰때 bind를 선언하는 부분에 대해 다룹니다
     this.handleData = this.handleData.bind(this);
     // 생성 후 4초 후에 handleData를 호출합니다.
     setTimeout(this.handleData, 4000);
