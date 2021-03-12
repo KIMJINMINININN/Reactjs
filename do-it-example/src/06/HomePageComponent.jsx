@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react';
-import ButtonWithLoadingContext from './ButtonWithLoadingContext';
+import ProTypes from 'prop-types'
+import ButtonWithContext from './ButtonWithContext';
 import Button from '../04/Button';
-import LoadingProvider from './LoadingProvider';
 
 function RowBComponent() {
   return <Button>버튼</Button>;
 }
 
 function RowCComponent() {
-  return <ButtonWithLoadingContext label="버튼"/>
+  return <ButtonWithContext>버튼</ButtonWithContext>
 }
 
 function TableComponent() {
@@ -21,13 +21,44 @@ function TableComponent() {
 }
 
 class HomePageComponent extends PureComponent {
-    
+    constructor(props){
+        super(props);
+
+        this.state = { loading: false};
+        this.setLoading = this.setLoading.bind(this);
+        this.toggleLoading = this.toggleLoading.bind(this);
+    }
+
+    getChildContext(){
+        return {
+            loading: this.state.loading,
+            setLoading: this.setLoading,
+        };
+    }
+
+    setLoading(loading){
+      this.setState({ loading });
+    }
+
+    toggleLoading(){
+        this.setState(({ loading }) => ({ loading: !loading}));
+    }
+
     render() {
         return (
-        <LoadingProvider>
+        <div>
             <TableComponent />
             <Button onPress={this.toggleLoading}>상태 변경</Button>
-        </LoadingProvider>
+        </div>
         );
     }
 }
+
+
+HomePageComponent.childContextTypes = {
+    loading: PropTypes.bool,
+    setLoading: PropTypes.func
+};
+
+export default HomePageComponent;
+
