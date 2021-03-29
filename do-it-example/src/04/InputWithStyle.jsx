@@ -18,27 +18,22 @@ class Input extends PureComponent {
       this.ref.focus();
     }
   }
-  componentDidUpdate() {
-    if (this.props.autoFocus) {
-      this.ref.focus();
-    }
-  }
   setRef(ref) {
     this.ref = ref;
   }
   render() {
-    const { errorMessage, label, name, value, type } = this.props;
+    const { errorMessage, label, value, name, type } = this.props;
     return (
       <div className="input-field">
         <input
           id={`input_${name}`}
-          className={`validate ${errorMessage && 'invlid'}`}
+          className={`validate ${errorMessage && 'invalid'}`}
           ref={this.setRef}
           type={type}
           onChange={this.handleChange}
           value={value}
         />
-        <label className="active" for={`input_${name}`}>
+        <label className="active" htmlFor={`input_${name}`}>
           {label}
         </label>
         {errorMessage && (
@@ -58,14 +53,12 @@ Input.propTypes = {
   errorMessage: PropTypes.string,
   label: PropTypes.string,
   onChange: PropTypes.func,
-  onFocus: PropTypes.func,
   autoFocus: PropTypes.bool,
 };
 Input.defaultProps = {
-  onChange: () => {},
-  onFocus: () => {},
-  autoFocus: false,
   type: 'text',
+  onChange: () => {},
+  autoFocus: false,
 };
 
 export default Input;

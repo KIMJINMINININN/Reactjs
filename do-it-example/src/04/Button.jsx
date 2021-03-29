@@ -27,6 +27,7 @@ class Button extends PureComponent {
           secondary && styles.secondary,
           primary && styles.primary,
         )}
+        disabled={disabled}
         onClick={onPress}
       >
         {children}
@@ -37,6 +38,7 @@ class Button extends PureComponent {
 
 Button.propTypes = {
   children: PropTypes.node.isRequired,
+  disabled: PropTypes.bool,
   xsmall: PropTypes.bool,
   small: PropTypes.bool,
   large: PropTypes.bool,
@@ -58,7 +60,7 @@ Button.defaultProps = {
 export default withStyles(({ color, size, unit, responsive }) => ({
   default: {
     border: 1,
-    borderStyle: 'soild',
+    borderStyle: 'solid',
     borderColor: color.default,
     borderRadius: 2,
     color: color.default,
@@ -68,6 +70,9 @@ export default withStyles(({ color, size, unit, responsive }) => ({
     [responsive.small]: {
       width: '100%',
     },
+  },
+  fullWidth: {
+    width: '100%',
   },
   xlarge: {
     fontSize: size.xg,

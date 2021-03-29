@@ -4,7 +4,7 @@ import withStyles, { css } from './withStyles';
 
 class Text extends PureComponent {
   render() {
-    const { children, styles, large, xlarge, small, xsmall, secondary, primary } = this.props;
+    const { children, styles, large, xlarge, small, xsmall, primary, secondary } = this.props;
     return (
       <span
         {...css(
@@ -33,10 +33,14 @@ Text.propTypes = {
   primary: PropTypes.bool,
 };
 
-export default withStyles(({ color, size }) => ({
+export default withStyles(({ color, size, responsive }) => ({
   default: {
     color: color.default,
     fontSize: size.md,
+    [responsive.small]: {
+      textAlign: 'center',
+      width: '100%',
+    },
   },
   xlarge: {
     fontSize: size.xg,
