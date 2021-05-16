@@ -1,3 +1,4 @@
+//화면
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
@@ -32,7 +33,9 @@ SearchResultTable.propTypes = {
     }),
   ),
 };
+
 SearchResultTable.defaultProps = {
   items: [],
 };
+
 export default SearchResultTable;

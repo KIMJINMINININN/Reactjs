@@ -5,7 +5,7 @@ import Modal from '../06/Modal';
 import Button from '../04/Button';
 import Text from '../04/Text';
 import ButtonWithModal from '../06/ButtonWithModal';
-// import ModalProvider, { Consumer } from '../06/ModalProvider';
+import ModalProvider, { Consumer } from '../06/ModalProvider';
 
 import ModalProviderWithKey, {
   CONFIRM_DELETE_MODAL,
@@ -24,6 +24,14 @@ storiesOf('Modal', module)
     </Modal>
   ))
   .addWithJSX('ButtonWithModal', () => <ButtonWithModal />)
+  .addWithJSX('ModalProvider', () => (
+    <ModalProvider>
+      <div>
+        <Text>다음 버튼 눌러 모달을 실행합니다.</Text>
+        <Consumer>{({ openModal }) => <Button onPress={() => openModal()}>삭제</Button>}</Consumer>
+      </div>
+    </ModalProvider>
+  ))
   .addWithJSX('ModalProviderWithKey', () => (
     <ModalProviderWithKey>
       <div>
