@@ -1,70 +1,91 @@
-# Getting Started with Create React App
+# twitter clone coding
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## react 환경 설정
 
-## Available Scripts
+1. npx create-react-app nwiiter
+2. 설치후 app.js에 app() 부분에 <div></div>만 남겼고 css, svg 같은것은 삭제
+3. index.js에는
 
-In the project directory, you can run:
+```
+<script>
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import firebase from './firebase.js'
 
-### `npm start`
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+</script>
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+이러한형식으로 만들어준다 4. src에는 결국 App.js, firebase.js, index.js만 남김
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## firebase 환경설정
 
-### `npm test`
+1. web 형태의 firebase를 만들고 난후. (not hosting)
+2. add firebase sdk부분이 나타나는데, web sdk api를 들어가보면, npm을 사용하여서 설치하는 방법이 나타난다.
+   2.1 npm install --save firebase
+   2.2 firebase.js에 import firebase from "firebase/app" 추가
+3. firebaseConfig의 내용을 firebase.js에 넣고,
+   export default firebase.initializeApp(firebaseConfig) 까지 추가
+4. 키값은 github에 올라가지 않게 하기 위해 .env에 따로 적어주고, REACT_APP을 붙여주어서 이름을 만들어주어야한다.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## react 폴더 구성
 
-### `npm run build`
+src
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- components
+  App.js
+  Router.js
+- routes
+  Auth.js
+  EditProfile.js
+  Home.js
+  Profile.js
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### router
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+router 설치
+npm install react-router-dom
 
-### `npm run eject`
+### 2.0 Using Firebase Auth
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+1. jsconfig.json을 사용함으로써 (.)을 하나하나 사용하지않고 들어갈수있다.
+2. export const authService = firebase.auth();를 fbase에 넣어주어서 export해주면
+   firebase의 auth를 할때마다 계속 호출해야하는것을 한번호출해서 export 시켜서 import하여서 사용할수있다.
+3. authService.currentUser -> firebase의 메서드를 호출하여서 사용하는것. currentUser라는 메소드는 현재의 user를 불러오는 메소드이다.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 2.3 Creating Account
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+두가지를 가지고 사용자를 만들수있었다.
+authService.createUserWithEmailAndPassword
+authService.signInWithEmailAndPassword
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### 2.4
 
-## Learn More
+1. useEffect -> react의 Hook
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+2. authService.onAuthStateChanged -> firebase의 로그인에 대한 Listener를 등록 하여서
+   변경될때 마다 동작하게 되는것
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 2.5
 
-### Code Splitting
+1. provider = new firebaseInstance.auth.GoogleAuthProvider();
+   provider = new firebaseInstance.auth.GithubAuthProvider();
+   위의 방법들로 인해서 구글과 Github에 인증 요청을 할수있게 되었음
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+2. await authService.signInWithPopup(provider)
+   authService.signInWithPopup으로 인해서 인증을 요청할 팝업을 띄우게되고
+   또한 구글과 깃헙과 연동시켜서 정상적으로 로그인을 할수있게 만들어줌
 
-### Analyzing the Bundle Size
+### 2.6
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+1. <Redirect from="*" to="/" />
+   react-router-dom의 Redirect를 사용할수있다.
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+2. authService.signOut()
+   로그아웃 하는 firebase의 방법
