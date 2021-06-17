@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import withStyles, { css } from './withStyles';
+import { withStyles, css } from './withStyles';
 
 class Button extends PureComponent {
   render() {
@@ -57,44 +57,44 @@ Button.defaultProps = {
   primary: false,
 };
 
-export default withStyles(({ color, size, unit, responsive }) => ({
+export default withStyles(({ color, size, unit, depth, fontWeight }) => ({
   default: {
+    ...depth.level1,
     border: 1,
     borderStyle: 'solid',
     borderColor: color.default,
-    borderRadius: 2,
+    borderRadius: unit,
     color: color.default,
     fontSize: size.md,
+    fontWeight: fontWeight.bold,
     padding: unit * 2,
+    paddingLeft: unit * 4,
+    paddingRight: unit * 4,
+    outline: 0,
     cursor: 'pointer',
-    [responsive.small]: {
-      width: '100%',
+    ':hover': {
+      backgroundColor: color.grayLight,
     },
-  },
-  fullWidth: {
-    width: '100%',
-  },
-  xlarge: {
-    fontSize: size.xg,
-  },
-  large: {
-    fontSize: size.lg,
-  },
-  small: {
-    fontSize: size.sm,
-    padding: unit,
-  },
-  xsmall: {
-    fontSize: size.xs,
-    padding: unit,
+    ':focus': {
+      boxShadow: '0 0 0px 2px rgba(0, 0, 0, 0.3)',
+    },
   },
   primary: {
     borderColor: color.primary,
     color: color.white,
     backgroundColor: color.primary,
+    ':hover': {
+      backgroundColor: color.primaryDark,
+    },
   },
-  secondary: {
-    borderColor: color.secondary,
-    color: color.secondary,
+  disabled: {
+    borderColor: color.grayDark,
+    color: color.grayLight,
+    cursor: 'default',
+    opacity: 0.5,
+    backgroundColor: color.gray,
+    ':hover': {
+      backgroundColor: color.gray,
+    },
   },
 }))(Button);

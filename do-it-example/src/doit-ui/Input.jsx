@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { withStyles, css, withStylesPropTypes } from './withStyles';
 
 class Input extends PureComponent {
   constructor(props) {
@@ -61,4 +62,47 @@ Input.defaultProps = {
   autoFocus: false,
 };
 
-export default Input;
+export default withStyles(({ depth, color, unit, size, lineHeight }) => ({
+  wrapper: {
+    border: 0,
+    padding: 0,
+    position: 'relative',
+  },
+  label: {
+    display: 'block',
+    fontSize: size.xs,
+    top: 2,
+    left: unit * 2,
+    cursor: 'pointer',
+  },
+  input: {
+    marginTop: 2,
+    fontSize: size.md,
+    lineHeight: lineHeight.md,
+    padding: unit * 1.5,
+    border: 1,
+    borderColor: color.primary,
+    borderStyle: 'solid',
+    borderRadius: 4,
+    outline: 0,
+    ':focus': {
+      boxShadow: '0 0 0px 2px rgba(0, 0, 0, 0.3)',
+    },
+  },
+  xlarge: {
+    fontSize: size.xg,
+  },
+  large: {
+    fontSize: size.lg,
+  },
+  small: {
+    fontSize: size.sm,
+    padding: unit,
+  },
+  errorLabel: {
+    color: color.error,
+  },
+  error: {
+    borderColor: color.error,
+  },
+}))(Input);

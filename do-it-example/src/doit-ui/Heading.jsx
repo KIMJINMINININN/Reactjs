@@ -1,12 +1,26 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import withStyles, { css } from './withStyles';
+import { withStyles, css } from './withStyles';
+const headingTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 
-class Text extends PureComponent {
+class Heading extends PureComponent {
   render() {
-    const { children, styles, large, xlarge, small, xsmall, primary, secondary } = this.props;
+    const {
+      children,
+      styles,
+      large,
+      xlarge,
+      small,
+      xsmall,
+      primary,
+      secondary,
+      level,
+    } = this.props;
+
+    const HeadingTag = headingTags[level - 1];
+
     return (
-      <span
+      <HeadingTag
         {...css(
           styles.default,
           xsmall && styles.xsmall,
@@ -18,12 +32,12 @@ class Text extends PureComponent {
         )}
       >
         {children}
-      </span>
+      </HeadingTag>
     );
   }
 }
 
-Text.propTypes = {
+Heading.propTypes = {
   children: PropTypes.node.isRequired,
   xsmall: PropTypes.bool,
   small: PropTypes.bool,
@@ -33,14 +47,22 @@ Text.propTypes = {
   primary: PropTypes.bool,
 };
 
-export default withStyles(({ color, size, responsive }) => ({
+Heading.defaultProps = {
+  level: 1,
+};
+
+export default withStyles(({ color, size, responsive, lineHeight, fontWeight, unit }) => ({
   default: {
-    color: color.default,
-    fontSize: size.md,
-    [responsive.small]: {
-      textAlign: 'center',
-      width: '100%',
-    },
+    lineHeight: lineHeight.lg,
+    fontWeight: fontWeight.bold,
+  },
+  inverse: {
+    color: color.white,
+  },
+  level1: {
+    fontSize: size.h1,
+    marginTop: unit * 2,
+    marginBottom: unit * 4,
   },
   xlarge: {
     fontSize: size.xg,
@@ -60,4 +82,4 @@ export default withStyles(({ color, size, responsive }) => ({
   secondary: {
     color: color.secondary,
   },
-}))(Text);
+}))(Heading);

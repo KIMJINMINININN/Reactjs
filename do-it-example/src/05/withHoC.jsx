@@ -1,9 +1,12 @@
 import React from 'react';
 
-export default function withHoc(WrappedComponent){
-    return class WithHoC extends React.Compoent {
-        render() {
-            return <WrappedComponent {...this.props}/>;
-        }
+export default function withHoC(WrappedComponent) {
+  const { displayName, name } = WrappedComponent;
+  const wrappedComponentName = displayName || name;
+  return class WithHoC extends React.Component {
+    static displayName = `withHoc(${wrappedComponentName})`;
+    render() {
+      return <WrappedComponent {...this.props} />;
     }
+  };
 }
