@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import './sass/materialize.scss';
 import './App.css';
 
-import InputWithStyle from './04/InputWithStyle';
+// import InputWithStyle from './04/InputWithStyle';
 
 class App extends Component {
   render() {

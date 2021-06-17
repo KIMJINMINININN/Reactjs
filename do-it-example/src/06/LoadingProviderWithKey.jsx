@@ -1,42 +1,42 @@
 import React from 'react';
-import PRopTyeps from 'prop-types';
+import PropTypes from 'prop-types';
 
-export const DEFAULT_key = 'defaultLoadingKey';
+export const DEFAULT_KEY = 'defaultLoadingKey';
 export const contextPropTypes = {
-    loading: PropTypes.bool,
-    setLoading: PropTypes.func
+  loading: PropTypes.bool,
+  setLoading: PropTypes.func,
 };
 
-export default (contextkey = DEFAULT_KEY) => {
-    class LoadingProvider extends React.Component {
-        constructor(props){
-            super(props);
+export default (contextKey = DEFAULT_KEY) => {
+  class LoadingProvider extends React.Component {
+    constructor(props) {
+      super(props);
 
-            this.state = {loading: false};
-            this.setLoading = this.setLoading.bind(this);
-        }
-
-    getChildContext(){
-        return {
-            [contextKey]: {
-                loading: this.state.loading,
-                setLoading: this.setLoading,
-            },
-        };
+      this.state = { loading: false };
+      this.setLoading = this.setLoading.bind(this);
     }
 
-    setLoading(loading){
-        this.setState({ loading });
+    getChildContext() {
+      return {
+        [contextKey]: {
+          loading: this.state.loading,
+          setLoading: this.setLoading,
+        },
+      };
     }
 
-    render(){
-        return this.props.children;
+    setLoading(loading) {
+      this.setState({ loading });
+    }
+
+    render() {
+      return this.props.children;
     }
   }
 
   LoadingProvider.childContextTypes = {
-      [contextKey]: contextPropTypes,
+    [contextKey]: contextPropTypes,
   };
 
   return LoadingProvider;
-}
+};
