@@ -205,7 +205,10 @@ for -> htmlFor
 
 npm init
 npm i react react-dom : react, react dom install
-npm i -D webpack-cli : webpack 설치
+npm install -D webpack : webpack 설치
+npm i -D webpack-cli : webpack-cli 설치
+-> npm i react-refresh @pmmmwh/react-refresh-webpack-plugin -D
+-> npm i -D webpack-dev-server
 
 - create-react-app을 수동으로 설정하는 방법
 
@@ -240,3 +243,21 @@ npm i @babel/preset-react
 npm i babel-loader
 
 webpack을 실행을 했을경우 webpack.config.js를 사용하여서 빌드하여 app.js를 만들게된다.
+
+### value와 onChange는 세트!
+
+## webpack devServer
+
+- \*\*변경이 됬는지 안됬는지 인식할수 있는 Option( 기존 데이터 유지하면서 Reloading을 하는지 안하는지!!!)
+  기존의 Reloading과 다른점이 무엇인가!?
+
+```
+devServer: {
+        //dist안에 되어있는것을 서버로 실행
+        publicPath: '/dist/',
+        //변경이 됬는지 안됬는지 인식할수 있는 Option( 기존 데이터 유지하면서 Reloading을 하는지 안하는지***)
+        hot: true,
+        //server의 포트 번호 설정
+        port: 3000
+    }
+```

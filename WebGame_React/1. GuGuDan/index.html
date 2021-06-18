@@ -1,76 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <title>끝말잇기</title>
 </head>
 <body>
     <div id="root"></div>
-    <script type="text/babel">
-        class GuGuDan extends React.Component{
-            constructor(props){ //생성자
-                super(props);
-                this.state = {
-                    first: Math.ceil(Math.random() * 9),
-                    second: Math.ceil(Math.random() * 9),
-                    value: '',
-                    result: '',
-                    print_value : '',
-                };
-            }
-            onSubmit = (e) => {
-                e.preventDefault();
-                //맞을경우
-                if(parseInt(this.state.value) === this.state.first * this.state.second){
-                    this.setState((prevState) => {
-                        return {
-                            first: Math.ceil(Math.random() * 9),
-                            second: Math.ceil(Math.random() * 9),
-                            value: '',
-                            result: '정답',
-                            print_value: '정답 : ' + prevState.value
-                        }
-                    })
-                    this.input.focus();
-                }else{//틀릴경우
-                    this.setState({
-                        value: '',
-                        result: '땡',
-                        print_value: this.state.value
-                    })
-                    this.input.focus();
-                }
-            }
-
-            onChange = (e) => {
-                this.setState({ value: e.target.value})
-            }
-
-            input;
-            Refinput = (c) => {
-                this.input = c
-                console.log("c : ", c)
-            };
-
-            //화면 반영
-            render(){
-                console.log("랜더링");
-                return (
-                    <div>
-                        <div>{this.state.first}곱하기{this.state.second}는?</div>
-                        <form onSubmit={this.onSubmit}>
-                            <input ref={this.Refinput} type="number" value={this.state.value} onChange={this.onChange} />
-                            <button>입력</button>
-                        </form>
-                        <div>{this.state.print_value} {this.state.result}</div>
-                    </div>
-                )
-            }
-        }
-    </script>
-    <script type="text/babel">
-        ReactDOM.render(<div><GuGuDan />, <GuGuDan />, <GuGuDan /></div>, document.querySelector('#root')); //그리겠다
-    </script>
+    <script src="./dist/app.js"></script>
+    <!-- html에서는 app.js라는 파일하나만을 인식할수가있다.-->
 </body>
 </html>
