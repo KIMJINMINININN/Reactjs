@@ -4,11 +4,11 @@ const { Component } = React;
 // Import React 하는거랑 비슷한거인듯
 class WordRealy extends React.Component{
     state = {
-
+        text: 'Hello, webpack',
     };
 
     render(){
-
+        return <h1>{this.state.text}</h1>;
     }
 }
 // Component를 exports 해주기 

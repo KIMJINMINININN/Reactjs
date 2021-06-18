@@ -201,7 +201,7 @@ for -> htmlFor
 <button id="button" className="" htmlFor>입력</button>
 ```
 
-## WebPack install
+## WebPack
 
 npm init
 npm i react react-dom : react, react dom install
@@ -233,3 +233,10 @@ webpack.config.js - webpack 설정
   name: 'wordrealy-setting',
   mode: 'development', // 실서비스 : production
   };
+
+npm i -D @babel/core
+npm i @babel/preset-env
+npm i @babel/preset-react
+npm i babel-loader
+
+webpack을 실행을 했을경우 webpack.config.js를 사용하여서 빌드하여 app.js를 만들게된다.
