@@ -3,8 +3,6 @@ dist
 node_modules/
 npm-debug.log
 yarn-error.log
-do-it-example/
-nwitter/
 # Editor directories and files
 .idea
 *.suo
