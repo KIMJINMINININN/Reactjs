@@ -1,11 +1,14 @@
 .DS_Store
+dist
 node_modules/
 npm-debug.log
 yarn-error.log
-
+do-it-example/
+nwitter/
 # Editor directories and files
 .idea
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
+do-it-example/src/06/LoadingProviderWithNewContext.jsx
