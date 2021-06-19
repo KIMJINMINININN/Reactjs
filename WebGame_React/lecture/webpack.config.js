@@ -57,7 +57,7 @@ module.exports = {
         publicPath: '/dist/',
     },
     devServer: {
-        //webpack Server에 가상경로 
+        //webpack Server에 가상경로  
         publicPath: '/dist/',
         //변경이 됬는지 안됬는지 인식할수 있는 Option( 기존 데이터 유지하면서 Reloading을 하는지 안하는지***)
         hot: true,
