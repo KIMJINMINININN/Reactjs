@@ -114,6 +114,25 @@ onSubmit = (e) => {
 </form>
 ```
 
+위와 같이 => 사용하지 않고싶다면,
+아래와 같이 생성자 함수와, 내부의 함수에서 .bind 함수를 사용해주어야
+그냥 function()을 가지고 함수를 만들어줄수있다.
+=> 함수를 해주는것이 .bind(this)를 해주는것과 같다.
+
+```
+constructor(props){
+    super(props);
+    this.state = {
+        ...
+    }
+    this.onSubmit = this.onSubmit.bind(this);
+}
+
+onSubmit = function(e) {
+    ...
+}
+```
+
 여러개를 쉽게 추가해서 사용할수있지만, 각각의 State는 구분되어서 사용되어진다.
 즉, 컴포넌트의 형식만 재대로 작성해서 적어준다면, 그 컴포넌트를 여러개를 각각 사용할수있다는 장점!!
 
@@ -345,3 +364,112 @@ Data를 넘겨주기위해서 Props를 사용하게된다.
 
 - Props를 사용하게되면, 부모 자식 컴포넌트가 형성되게되는데 데이터를 주는쪽이 부모컴포넌트
   받는쪽에 자식 컴포넌트
+
+### React의 주석
+
+`{/* <input maxLength={4} value={this.state.value} onChange={this.onChangeInput} /> */}`
+
+## React의 배열 추가
+
+React의 Render를 하는기준이 예전 state와 현재 state가 달라야 실행이되는데
+만약 push만 그냥 해준다면, 그전의 state와 지금 state가 변경이된게 없다고 인식이된다.
+그래서 React를 할때는 그냥 push만 하면안되고, 예전함수를 ...arr1로 넣어주고
+그다음값을 넣어주어야한다.
+
+ex)
+
+```
+      this.setState({
+        result: '홈런!',
+        tries: [...this.state.tries, { try: this.state.value, result: '홈런!' }],
+      });        //...this.state.tries : 옛날것, { try: this.state.value, result: '홈런!' } : 추가할것
+```
+
+### 비구조화 할당
+
+```
+const { result, value, tries, answer } = this.state;
+```
+
+를 사용해서 this.state를 하나씩 다 안쓰고 위에 처럼 만들어줄수있다.
+
+## React Developer Tools
+
+크롬에서 다운로드 받아서 사용
+
+## render()
+
+state, props가 변경되면 React가 불러오게되는데,
+아래와 같이 state를 변경하지않고 그냥 setState만 변경하게되어도
+render는 호출이 되게된다.
+
+```
+    this.setState({});
+```
+
+### shouldComponentUpdate
+
+원하는 render 조건을 해주는 방법.
+
+```
+shouldComponentUpdate(nextProps, nextState, nextContext) {
+    if (this.state.counter !== nextState.counter) { //이전의 counter와 나중의 counter가 변경이될경우
+        return true; // render 한다
+    }
+        return false; // render 안한다
+    }
+```
+
+## PureComponent
+
+성능개선에 탁월!!!!!! [PureComponent, memo]
+
+shouldComponentUpdate를 자동으로 구현해놓은것(PureComponent에서는 shouldComponentUpdate를 XX)
+아래와 같이 PureComponent는 간단한 string,number, boolean 같은것들은 확인이 가능하나
+object, array같은경우는 확인하기가 어렵다.
+또한 array, object의 경우 일반적으로 그냥 push해서 직접넣어주면 render가 안되고
+이전의 값들을 ...(전개연산자)로 넣어주고 다음원하는값을 넣어주어야만 이전값과의 비교가
+되어서 render를 할수가있다.
+\*\* 또한 {[{}]} 이런식으로 너무 복잡하게는 state에 넣지는 말자.
+
+```
+state = {
+    counter: 0,
+    string: "hello",
+    number: 1,
+    boolean: true,
+    object: {},
+    array: [],
+  };
+
+  onClick = () => {
+    <!-- const array = this.state.array;
+    array.push(1);
+    this.setState({
+      array: array,
+    }); -->
+    this.setState({
+        array: [...this.state.array, 1]
+    })
+  };
+```
+
+### Hooks에서 PureComponent, shouldComponentUpdate
+
+Hooks에서는 아래와 같이 사용하게된다.
+
+```
+mport React, { memo } from 'react';
+// 구조분해 사용해서 props를 tryInfo로 바로 전환한후 사용
+// Hooks를 사용할때에는 PureComponent도 없고, shouldComponentUpdate도 없기때문에 memo라는것을 사용 Props, state가 바꼈을때만 render
+const Try = memo(({ tryInfo }) => {
+  return (
+    <li>
+      <div>{tryInfo.try}</div>
+      <div>{tryInfo.result}</div>
+    </li>
+  );
+});
+
+export default Try;
+```

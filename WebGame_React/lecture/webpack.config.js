@@ -30,9 +30,14 @@ module.exports = {
                 // presets: ['@babel/preset-env', '@babel/preset-react'],
                 presets: [['@babel/preset-env', {
                     targets:{
-                        browsers:['> 1% in KR'], //browserslist 
+                        // browsers:['> 1% in KR'], //browserslist 
                         //https://github.com/browserslist/browserslist/blob/main/README.md 참고
                         //'last 2 chrome versions'
+                        browserslist: [
+                            "defaults",
+                            "not IE 11",
+                            "maintained node versions"
+                          ]
                     },
                     debug: true,
                 }], '@babel/preset-react'],
