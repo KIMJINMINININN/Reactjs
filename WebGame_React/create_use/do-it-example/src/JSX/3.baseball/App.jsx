@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
-import ResponseCheck from './JSX/4.reaction/ResponseCheck';
+import NumberBaseball from './JSX/3.baseball/NumberBaseball';
 
 class App extends Component {
   render() {
     return (
       <div className="body">
-        <ResponseCheck />
+        <NumberBaseball />
       </div>
     );
   }

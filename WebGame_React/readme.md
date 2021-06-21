@@ -473,3 +473,27 @@ const Try = memo(({ tryInfo }) => {
 
 export default Try;
 ```
+
+
+## createRef()
+
+```
+import React, { Component, createRef } from 'react';
+inputRef = createRef();
+<input ref={this.inputRef} maxLength={4} value={value} onChange={this.onChangeInput} />
+```
+
+## Context 
+A -> B -> C -> D -> E -> F -> G
+이런식으로 나타날때에 중간 과정을 거치지 않고 A -> G로 곧바로 props나 데이터를 주고싶을때
+Context를 사용, 또한 이러한 이류를 가지고 Redux도 사용이 가능하다
+props -> context -> redux 
+
+
+## JSX의 for과 if
+JSX안에서는 for와 if를 사용할수없다.
+
+삼항연산자 -> JSX의 if절
+```
+    this.state.result.length !== 0 ? null : <div>평균 시간 : {this.state.result.reduce((a, c) => a + c) / this.state.result.length}ms</div>
+```

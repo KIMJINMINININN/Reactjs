@@ -1,4 +1,4 @@
-/* import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import Try from './Try';
 
 //숫자 뽑기 함수
@@ -37,6 +37,7 @@ class NumberBaseball extends Component {
         answer: getNumbers(),
         tries: [],
       });
+      this.inputRef.current.focus();
     } else {
       //답이 틀렷을때
       const answerArray = value.split('').map((v) => parseInt(v));
@@ -54,6 +55,7 @@ class NumberBaseball extends Component {
           answer: getNumbers(),
           tries: [],
         });
+        this.inputRef.current.focus();
       } else {
         //10번 이하로 틀렸을때
         for (let i = 0; i < 4; i += 1) {
@@ -75,6 +77,7 @@ class NumberBaseball extends Component {
           value: '',
           }
         });
+        this.inputRef.current.focus();
       }
     }
     console.log(value);
@@ -85,23 +88,19 @@ class NumberBaseball extends Component {
       value: e.target.value,
     });
   };
+  //inputref
+  inputRef = createRef();
 
-  // fruits = [
-  //   { fruit: '사과', taste: '맛있다' },
-  //   { fruit: '감', taste: '맛있다' },
-  //   { fruit: '귤', taste: '맛있다' },
-  //   { fruit: '밤', taste: '맛있다' },
-  //   { fruit: '배', taste: '맛있다' },
-  //   { fruit: '무', taste: '맛있다' },
-  //   { fruit: '사과', taste: '맛있다' },
-  // ];
+  // onInputRef = (c) => {this.inputRef = c; }
+  // 위의 것을 사용할때에는 함수를 사용하여 자유도가 있다.
+
   render() {
     const { result, value, tries } = this.state;
     return (
       <>
         <h1>{result}</h1>
         <form onSubmit={this.onSubmitForm}>
-          <input maxLength={4} value={value} onChange={this.onChangeInput} />
+          <input ref={this.inputRef} maxLength={4} value={value} onChange={this.onChangeInput} />
         </form>
         <div>시도 : {tries.length}</div>
         <ul>
@@ -115,8 +114,8 @@ class NumberBaseball extends Component {
 }
 
 export default NumberBaseball;
- */
 
+/* 
 import React, { useState } from 'react';
 import Try from './Try';
 
@@ -163,6 +162,7 @@ const NumberBaseball = () => {
         setValue('');
         setAnswer(getNumbers());
         setTries([]);
+        inputEl.current.focus();
       } else {
         //10번 이하로 틀렸을때
         for (let i = 0; i < 4; i += 1) {
@@ -179,6 +179,7 @@ const NumberBaseball = () => {
           return [...prevTries, { try: value, result: `${strike} 스트라이크 , ${ball} 볼입니다.` }];
         });
         setValue('');
+        inputEl.current.focus();
       }
     }
     console.log(value);
@@ -205,3 +206,4 @@ const NumberBaseball = () => {
 };
 
 export default NumberBaseball;
+ */
