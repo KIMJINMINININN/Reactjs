@@ -4,6 +4,7 @@ import Ball from './Ball';
 function getWinNumbers(){
     console.log("getWinNumbers");
     const candidate = Array(45).fill().map((v, i) => i + 1);
+    console.log("candidate : ", candidate)
     const shuffle = [];
     while(candidate.length > 0){
         shuffle.push(candidate.splice(Math.floor(Math.random() * candidate.length), 1)[0]);
@@ -20,6 +21,27 @@ class Lotto extends Component {
         bonus: null, //보너스 공
         redo: false,
     };
+
+    componentDidMount(){
+        const { winNumbers } = this.state;
+        //javascript 아래부분에서 let을 쓰면 클로저 문제가 발생하지 않는 꿀팁
+        for( let i = 0; i < winNumbers.length - 1; i++){
+            setTimeout(() => {
+                this.setState( (prevState) => {
+                    return {
+                        winBalls: [...prevState.winBalls, winNumbers[i]],
+                    }
+                });
+            },(i + 1) * 1000);
+        }
+        setTimeout( () => {
+            this.setState({
+                bonus: winNumbers[6],
+                //한번더 버튼 true or false
+                redo: true,
+            })
+        }, 7000)
+    }
 
     render() {
         const { winBalls, bonus, redo } = this.state;

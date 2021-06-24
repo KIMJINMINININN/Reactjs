@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
-import RSP from './JSX/5.rockpaper/RSP(hooks)';
+import Lotto from './JSX/6.lotto/Lotto';
 
 class App extends Component {
   render() {
     return (
       <div className="body">
-        <RSP />
+        <Lotto />
       </div>
     );
   }
