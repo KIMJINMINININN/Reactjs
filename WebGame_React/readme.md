@@ -459,7 +459,7 @@ state = {
 Hooks에서는 아래와 같이 사용하게된다.
 
 ```
-mport React, { memo } from 'react';
+import React, { memo } from 'react';
 // 구조분해 사용해서 props를 tryInfo로 바로 전환한후 사용
 // Hooks를 사용할때에는 PureComponent도 없고, shouldComponentUpdate도 없기때문에 memo라는것을 사용 Props, state가 바꼈을때만 render
 const Try = memo(({ tryInfo }) => {
@@ -474,7 +474,6 @@ const Try = memo(({ tryInfo }) => {
 export default Try;
 ```
 
-
 ## createRef()
 
 ```
@@ -483,17 +482,124 @@ inputRef = createRef();
 <input ref={this.inputRef} maxLength={4} value={value} onChange={this.onChangeInput} />
 ```
 
-## Context 
+## Context
+
 A -> B -> C -> D -> E -> F -> G
 이런식으로 나타날때에 중간 과정을 거치지 않고 A -> G로 곧바로 props나 데이터를 주고싶을때
 Context를 사용, 또한 이러한 이류를 가지고 Redux도 사용이 가능하다
-props -> context -> redux 
+props -> context -> redux
 
+---
 
 ## JSX의 for과 if
-JSX안에서는 for와 if를 사용할수없다.
+
+JSX안에서는 for와 if를 사용할수있지만 너무 코드가 더럽게나와서 잘 사용하지 않는다.
 
 삼항연산자 -> JSX의 if절
+
 ```
     this.state.result.length !== 0 ? null : <div>평균 시간 : {this.state.result.reduce((a, c) => a + c) / this.state.result.length}ms</div>
+```
+
+## ref의 또다른 사용
+
+useState와 useRef와 또다른 차이점\*\*
+state를 변경하면 render가 자동으로 실행되는데, useRef를 사용하면 실행되지않는다.(화면에는 영향을 미치게하고 싶지않을때)
+this를 대신해서 useRef를 사용하게된다. 화면은 바꾸고싶지않은데 바꾸게 되는값들을 이것으로 사용해서 넣어준다.
+
+- useRef의 다른 사용 방법
+
+```
+    const timeout = useRef(null);
+    const startTime = useRef();
+    const endTime = useRef();
+```
+
+## if, for 사용
+
+즉시 실행 함수를 사용해줘야하고, 거의는 사용하지 않는다.
+사용해야할떄가 있긴하지만 아주 적은 빈도
+
+- if
+
+```
+{{(() =>{
+                if(result.length === 0){
+                    return null;
+                } else{
+                    return <>
+                        <div>평균 시간 : {result.reduce((a,c) => a + c) / result.length}ms</div>
+                        <button onClick={onReset}></button>
+                    </>
+                }
+            })()}}
+```
+
+- for
+
+```
+{/* {(() => {
+            const array = [];
+            for (let i =0 ; i < tries.length; i++){
+              array.push(<Try key={`${i+ 1}차 시도 :  ${v.try} `} tryInfo={v}/>);
+            }
+            return array;
+          })()} */}
+```
+
+## 리액트 라이프사이클
+
+### Class의 라이프사이클
+
+첫번째 랜더링 : 클래스의 경우 -> constructor -> render -> ref -> componentDidMount
+[(setState/props) 바뀔때 : shouldComponentUpdate(true) -> render -> componentDidUpdate]
+소멸할때 componentWillUnmount -> 소멸
+
+```
+    //render가 성공적으로 실행됬다면, componentDidMount이 실행되게된다.
+    componentDidMount(){ //컴포넌트가 첫 렌더링한 후 -> 비동기 요청을 많이하게된다
+
+    }
+
+    componentDidUpdate(){ // Rerendering이 될때
+
+    }
+
+    componentWillUnmount(){ //컴포넌트 제거되기 직전 -> 비동기 요청을 정리를 많이하게된다.
+
+    }
+```
+
+### Hooks의 라이프사이클 따라하기
+
+Hooks에는 라이프사이클이라는것은 따로 없지만 비슷하게 사용할수있는 기능이 제공된다.
+
+#### userEffect
+
+```
+    useEffect(() => { // componentDidMount, componentDidUpdate 역할을 한다(두개를 합쳐놨다라고 생각한다)
+            return () => { // componentWillUnMount의 역활을 한다
+
+            }
+        }, []);
+```
+
+`Hooks를 사용할때는 render가 될때마다 Hooks안에 있는 함수 컴포넌트 전체가 다시 실행된다.`
+
+아래의 코드를 돌리게되면 imgCoord는 0.1초마다 계속 바뀌게 되는데 두번째 인수 배열의 넣은값이 바뀔때에
+useEffect가 실행되기 때문에 아래의 console.log을 찍었을때에는
+다시실행
+종료
+가 log로 찍히게된다.
+
+```
+useEffect(() => { // componentDidMount, componentDidUpdate 역할을 한다(두개를 합쳐놨다라고 생각한다)
+        console.log("다시 실행")
+        interval.current = setInterval(changeHand, 100);
+        return () => { // componentWillUnMount의 역활을 한다
+            console.log("종료")
+            clearInterval(interval.current)
+        }
+    }, [imgCoord]);// 두번째 인수 배열에 넣은값(imgCoord)들이 바뀔때 useEffect가 실행된다.
+    }, []); //처음에만 한번 실행되고 그다음부터는 실행하지 않겠다는것을 의미한다.
 ```

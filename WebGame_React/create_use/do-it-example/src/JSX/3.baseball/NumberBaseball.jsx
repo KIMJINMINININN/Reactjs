@@ -23,11 +23,11 @@ class NumberBaseball extends Component {
   onSubmitForm = (e) => {
     // const { result, value, tries, answer } = this.state;
     e.preventDefault();
-    if (value === answer.join('')) {
+    if (this.state.value === this.state.answer.join('')) {
       this.setState((prevState) => {
         return{
           result: '홈런!',
-          tries: [...prevState.tries, { try: value, result: '홈런!' }],
+          tries: [...prevState.tries, { try: this.state.value, result: '홈런!' }],
         }
       });
       alert('게임을 다시 시작합니다!');
@@ -40,13 +40,13 @@ class NumberBaseball extends Component {
       this.inputRef.current.focus();
     } else {
       //답이 틀렷을때
-      const answerArray = value.split('').map((v) => parseInt(v));
+      const answerArray = this.state.value.split('').map((v) => parseInt(v));
       let strike = 0;
       let ball = 0;
-      if (tries.length >= 9) {
+      if (this.state.tries.length >= 9) {
         //10번 이상 틀렸을때
         this.setState({
-          result: `10번 넘게 틀려서 실패! 답은 ${answer.join(',')}였습니다!`,
+          result: `10번 넘게 틀려서 실패! 답은 ${this.state.answer.join(',')}였습니다!`,
         });
         alert('게임을 다시 시작합니다!');
         //초기화
@@ -59,10 +59,10 @@ class NumberBaseball extends Component {
       } else {
         //10번 이하로 틀렸을때
         for (let i = 0; i < 4; i += 1) {
-          if (answerArray[i] === answer[i]) {
+          if (answerArray[i] === this.state.answer[i]) {
             //정답일때는 strike +1
             strike += 1;
-          } else if (answer.includes(answerArray[i])) {
+          } else if (this.state.answer.includes(answerArray[i])) {
             //오답일때는 ball +1
             ball += 1;
           }
@@ -71,8 +71,8 @@ class NumberBaseball extends Component {
         this.setState((prevState) => {
           return {
             tries: [
-            ...tries,
-            { try: value, result: `${strike} 스트라이크 , ${ball} 볼입니다.` },
+            ...this.state.tries,
+            { try: this.state.value, result: `${strike} 스트라이크 , ${ball} 볼입니다.` },
           ],
           value: '',
           }
@@ -80,7 +80,7 @@ class NumberBaseball extends Component {
         this.inputRef.current.focus();
       }
     }
-    console.log(value);
+    console.log(this.state.value);
   };
 
   onChangeInput = (e) => {

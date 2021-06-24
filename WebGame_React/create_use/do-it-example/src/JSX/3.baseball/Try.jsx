@@ -26,7 +26,7 @@ class Try extends PureComponent {
 }
 
 export default Try;
-
+/* 
 // ---------------------------------------
 import React, { memo } from 'react';
 // 구조분해 사용해서 props를 tryInfo로 바로 전환한후 사용
@@ -50,3 +50,4 @@ const Try = memo(({ tryInfo }) => {
 });
 
 export default Try;
+ */
