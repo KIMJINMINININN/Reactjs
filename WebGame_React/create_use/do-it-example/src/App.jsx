@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import Lotto from './JSX/6.lotto/Lotto';
+import Lotto from './JSX/6.lotto/Lotto(hooks)';
 
 class App extends Component {
   render() {

@@ -423,6 +423,7 @@ shouldComponentUpdate(nextProps, nextState, nextContext) {
 ## PureComponent
 
 성능개선에 탁월!!!!!! [PureComponent, memo]
+`자식 컴포넌트에는 왠만해서는 넣어주는게 좋다. render가 될때 계속 리로딩되니 불필요한 Render가 되기때문`
 
 shouldComponentUpdate를 자동으로 구현해놓은것(PureComponent에서는 shouldComponentUpdate를 XX)
 아래와 같이 PureComponent는 간단한 string,number, boolean 같은것들은 확인이 가능하나
