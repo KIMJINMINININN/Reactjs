@@ -699,3 +699,7 @@ useMemo(
   [rowData[i]],
 ),
 ```
+
+---
+
+## Context API

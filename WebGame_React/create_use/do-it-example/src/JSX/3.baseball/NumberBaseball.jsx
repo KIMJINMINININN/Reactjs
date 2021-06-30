@@ -1,4 +1,4 @@
-import React, { Component, createRef } from 'react';
+/* import React, { Component, createRef } from 'react';
 import Try from './Try';
 
 //숫자 뽑기 함수
@@ -113,10 +113,10 @@ class NumberBaseball extends Component {
   }
 }
 
-export default NumberBaseball;
+export default NumberBaseball; */
 
-/* 
-import React, { useState } from 'react';
+
+import React, { useState, createRef } from 'react';
 import Try from './Try';
 
 //숫자 뽑기 함수
@@ -135,6 +135,8 @@ const NumberBaseball = () => {
   const [value, setValue] = useState('');
   const [answer, setAnswer] = useState(getNumbers());
   const [tries, setTries] = useState([]);
+
+  const inputEl = createRef();
 
   const onSubmitForm = (e) => {
     e.preventDefault();
@@ -193,7 +195,7 @@ const NumberBaseball = () => {
     <>
       <h1>{result}</h1>
       <form onSubmit={onSubmitForm}>
-        <input maxLength={4} value={value} onChange={onChangeInput} />
+        <input ref={inputEl} maxLength={4} value={value} onChange={onChangeInput} />
       </form>
       <div>시도 : {tries.length}</div>
       <ul>
@@ -206,4 +208,3 @@ const NumberBaseball = () => {
 };
 
 export default NumberBaseball;
- */
