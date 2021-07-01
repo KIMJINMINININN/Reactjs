@@ -12,10 +12,10 @@ export const CODE = {
     CLICKED_MINE: -6,
     OPENED: 0, //0이상이면 다 opened
 }
-
+//context 데이터 생성
 export const TableContext = createContext({
-    tableData: [
-    ],
+    tableData: [],
+    halted: true,
     dispatch: () => {},
 });
 
@@ -23,6 +23,7 @@ const initialState ={
     tableData : [],
     timer: 0,
     result: '',
+    halted: true, //게임이 진행되고, 멈추고 할수있는 변수
 };
 
 const plantMine = (row, cell, mine) => {
@@ -55,14 +56,105 @@ const plantMine = (row, cell, mine) => {
 }
 
 export const START_GAME = "START_GAME"
+export const OPEN_CELL = "OPEN_CELL"
+export const CLICKED_MINE = "CLICKED_MINE"
+export const FLAG_CELL = "FLAG_CELL"
+export const QUESTION_CELL = "QUESTION_CELL"
+export const NORMALIZE_CELL = "NORMALIZE_CELL"
 
 const reducer = (state, action) => {
     switch(action.type){
         case START_GAME:
             return {
                 ...state,
-                tableData: plantMine(action.row, action.cell, action.mine)
+                tableData: plantMine(action.row, action.cell, action.mine),
+                halted: false
             }
+        case OPEN_CELL:{
+            //불변성을 지키기 위한 방법
+            const tableData = [...state.tableData];
+            tableData[action.row] = [...state.tableData[action.row]]
+
+            //클릭한 주변 검사
+            let around = [];
+            if(tableData[action.row - 1]){
+                around = around.concat(
+                    tableData[action.row-1][action.cell-1],
+                    tableData[action.row-1][action.cell],
+                    tableData[action.row-1][action.cell]+1,
+                )
+            };
+            around =  around.concat(
+                tableData[action.row][action.cell - 1],
+                tableData[action.row][action.cell + 1],
+            );
+            if(tableData[action.row + 1]){
+                around = around.concat(
+                    tableData[action.row+1][action.cell-1],
+                    tableData[action.row+1][action.cell],
+                    tableData[action.row+1][action.cell+1],
+                )
+            }
+            //지뢰 갯수 
+            const count = around.filter((v) => [CODE.MINE, CODE.FALG_MINE, CODE.QUESTION_MINE].includes(v)).length;
+            console.log("count : ", count)
+            tableData[action.row][action.cell] = count;
+            return {
+                ...state,
+                tableData,
+            }
+        }
+        case CLICKED_MINE:{
+            //불변성을 지키기 위한 방법
+            const tableData = [...state.tableData];
+            tableData[action.row] = [...state.tableData[action.row]]
+            tableData[action.row][action.cell] = CODE.CLICKED_MINE;
+
+            return {
+                ...state,
+                tableData,
+                halted: true,
+            }
+        }
+        case FLAG_CELL : {
+            const tableData = [...state.tableData];
+            tableData[action.row] = [...state.tableData[action.row]]
+            if(tableData[action.row][action.cell] === CODE.MINE){
+                tableData[action.row][action.cell] = CODE.FLAG_MINE;
+            } else{
+                tableData[action.row][action.cell] = CODE.FLAG;
+            }
+            return {
+                ...state,
+                tableData,
+            }
+        }
+        case QUESTION_CELL : {
+            const tableData = [...state.tableData];
+            tableData[action.row] = [...state.tableData[action.row]]
+            if(tableData[action.row][action.cell] === CODE.FALG_MINE){
+                tableData[action.row][action.cell] = CODE.QUESTION_MINE;
+            } else{
+                tableData[action.row][action.cell] = CODE.QUESTION;
+            }
+            return {
+                ...state,
+                tableData,
+            }
+        }
+        case NORMALIZE_CELL: {
+            const tableData = [...state.tableData];
+            tableData[action.row] = [...state.tableData[action.row]]
+            if(tableData[action.row][action.cell] === CODE.QUESTION_MINE){
+                tableData[action.row][action.cell] = CODE.MINE;
+            } else{
+                tableData[action.row][action.cell] = CODE.NORMAL;
+            }
+            return {
+                ...state,
+                tableData,
+            }
+        }
         default:
             return state;
     }
@@ -70,15 +162,16 @@ const reducer = (state, action) => {
 
 const MineSearch = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
+    const {tableData, halted, timer, result} = state;
     //캐싱해주기
-    const value = useMemo( () => ({ tableData: state.tableData, dispatch}, [state.tableData]))
+    const value = useMemo( () => ({ tableData: state.tableData, dispatch, halted: halted}, [tableData, halted]))
     return(
         //context api에서 접근하려면 TableContext.Provider
         <TableContext.Provider value={value}>
             <Form dispatch={dispatch} />
-            <div>{state.timer}</div>
+            <div>{timer}</div>
             <Table/>
-            <div>{state.result}</div>
+            <div>{result}</div>
         </TableContext.Provider>
     )
 }

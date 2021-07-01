@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
-import Tictacto from './JSX/7.tictacto/Tictacto';
+import MineSearch from './JSX/8.Zirae/MineSearch';
 
 class App extends Component {
   render() {
     return (
       <div className="body">
-        <Tictacto />
+        <MineSearch />
       </div>
     );
   }
