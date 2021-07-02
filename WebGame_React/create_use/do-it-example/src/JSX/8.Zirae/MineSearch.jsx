@@ -74,31 +74,77 @@ const reducer = (state, action) => {
             //불변성을 지키기 위한 방법
             const tableData = [...state.tableData];
             tableData[action.row] = [...state.tableData[action.row]]
+            tableData.forEach((row, i) => {
+                tableData[i] = [...state.tableData[i]];
+            })
+            const checked = [];
+            const count = 0;
+            const checkArround = (row, cell) => {
+                //닫힌 칸만 열기
+                if([CODE.OPENED, CODE.FLAG_MINE, CODE.FALG, CODE.QUESTION_MINE, CODE.QUESTION].includes(tableData[row][cell])){
+                    return
+                }
+                //상하 좌우 칸이 아닌 경우 필터링
+                if(row < 0 || row >= tableData.length || cell < 0 || cell >= tableData[0].length){ 
+                    return;
+                }
+                if(checked.includes(row + '/' + cell)){ //이미 검사한 칸이면
+                    return;
+                } else{ // 검사를 한거면 
+                    checked.push(row + ',' + cell);
+                }
+                //클릭한 주변 검사
+                let around = [tableData[row][cell - 1], tableData[row][cell + 1]];
+                //주변칸들의 지뢰 갯수 구하기
+                if(tableData[row - 1]){
+                    around = around.concat(
+                        tableData[row-1][cell-1],
+                        tableData[row-1][cell],
+                        tableData[row-1][cell]+1,
+                    )
+                };
+                around =  around.concat(
+                    tableData[row][cell - 1],
+                    tableData[row][cell + 1],
+                );
+                if(tableData[row + 1]){
+                    around = around.concat(
+                        tableData[row+1][cell-1],
+                        tableData[row+1][cell],
+                        tableData[row+1][cell+1],
+                    )
+                }
+                //지뢰 갯수 
+                const count = around.filter((v) => [CODE.MINE, CODE.FALG_MINE, CODE.QUESTION_MINE].includes(v)).length;
+                console.log("count : ", count)
+                tableData[row][cell] = count;
+                if(count === 0){ //내가 빈칸이면 주변애들검사
+                    const near = [];
+                    if(row - 1 > -1){ // 제일 윗칸
+                        near.push([row - 1, cell - 1]);
+                        near.push([row - 1, cell]);
+                        near.push([row - 1, cell + 1]);
+                    }
+                    near.push([row, cell - 1]);
+                    near.push([row, cell + 1]);
+                    if(row - 1 > tableData.length){ // 제일 아래칸
+                        near.push([row + 1, cell - 1]);
+                        near.push([row + 1, cell]);
+                        near.push([row + 1, cell + 1]);
+                    }
+                    // near.filter(v => !!v[0]).forEach((n) => {
+                    //     checkArround(n[0], n[1]);
+                    // })
+                    near.forEach((n) => {
+                        if(tableData[n[0][n[1]]] !== CODE.OPENED){
+                            checkArround(n[0], n[1]);
+                        }
+                    })
+                }else{
 
-            //클릭한 주변 검사
-            let around = [];
-            if(tableData[action.row - 1]){
-                around = around.concat(
-                    tableData[action.row-1][action.cell-1],
-                    tableData[action.row-1][action.cell],
-                    tableData[action.row-1][action.cell]+1,
-                )
-            };
-            around =  around.concat(
-                tableData[action.row][action.cell - 1],
-                tableData[action.row][action.cell + 1],
-            );
-            if(tableData[action.row + 1]){
-                around = around.concat(
-                    tableData[action.row+1][action.cell-1],
-                    tableData[action.row+1][action.cell],
-                    tableData[action.row+1][action.cell+1],
-                )
+                }
             }
-            //지뢰 갯수 
-            const count = around.filter((v) => [CODE.MINE, CODE.FALG_MINE, CODE.QUESTION_MINE].includes(v)).length;
-            console.log("count : ", count)
-            tableData[action.row][action.cell] = count;
+            checkArround(action.row, action.cell)
             return {
                 ...state,
                 tableData,
