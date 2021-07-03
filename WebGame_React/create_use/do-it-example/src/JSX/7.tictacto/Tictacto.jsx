@@ -109,8 +109,10 @@ const Tictacto = () => {
     } else {
       let all = true; //all이 true면 무승부라는 뜻
       tableData.forEach((row) => {
+        console.log('row : ', row);
         //무승부 검사
         row.forEach((cell) => {
+          console.log('cell : ', cell);
           if (!cell) {
             all = false;
           }

@@ -14,13 +14,14 @@ const Td = memo(({ rowIndex, cellIndex, cellData, dispatch }) => {
     );
     ref.current = [rowIndex, cellIndex, dispatch, cellData];
   }, [rowIndex, cellIndex, dispatch, cellData]); */
+
   const onClickTd = useCallback(() => {
     console.log(rowIndex, cellIndex);
     if (cellData) {
       return;
     }
-    dispatch({ type: CLICK_CELL, row: rowIndex, cell: cellIndex });
     //state는 비동기라는 사실!!
+    dispatch({ type: CLICK_CELL, row: rowIndex, cell: cellIndex });
   }, [cellData]);
 
   return <td onClick={onClickTd}>{cellData}</td>;

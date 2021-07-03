@@ -684,6 +684,49 @@ state는 아무도 못건들고 action이 state를 수정할수있는데, 그것
 useMemo로 컴포넌트를 기억해버리는 방법을 시도해볼수도있다.
 
 ```
+// initialState state와 같은 역활을 하는 useReducer
+    const initialState = {
+        winner: '',
+        turn: 'O',
+        tableData: [
+            ['', '', ''],
+            ['', '', ''],
+            ['', '', ''],
+        ],
+        recentCell: [-1, -1],
+    };
+
+    // reducer를 사용해서 initialState(state)의 데이터를 변경한다
+    const reducer = (state, action) => {
+        //action은 reducer의 {type: SET_WINNER, winner: 'O'}를 뜻한다.
+        switch (action.type) {
+            case SET_WINNER:
+            //state.winner = action.winner; 이렇게 하면안된다.
+
+            return {
+                ...state,
+                winner: action.winner,
+            };
+        }
+    };
+
+    // Reducer 선언해주기(함수안에)
+    const [state, dispatch] = useReducer(reducer, initialState);
+
+    // dispatch로 reducer에 전달하기
+    dispatch({ type: SET_WINNER, winner: turn });
+```
+
+state는 아무도 못건들고 action이 state를 수정할수있는데, 그것을 dispatch로 알린다.
+어떻게 바꿀지는 reducer에서 정해둔다.
+
+//state는 비동기라는 사실!! 비동기 State에 따라 어떤것을 처리할때는 useEffect를 사용한다.
+//Redux는 동기적으로 State를 변경해주는데, userReducer는 비동기적으로 state를 변경한다.
+
+성능 최적화를 memo를 하고나서 이후에도 최적화를 더해보고싶을때
+useMemo로 컴포넌트를 기억해버리는 방법을 시도해볼수도있다.
+
+```
 useMemo(
   () => (
     <Td
