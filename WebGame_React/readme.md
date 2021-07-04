@@ -746,3 +746,5 @@ useMemo(
 ---
 
 ## Context API
+
+Context API를 사용하면 state가 바뀔때마다 함수 전체가 되게된다.
