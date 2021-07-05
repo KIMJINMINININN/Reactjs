@@ -748,3 +748,36 @@ useMemo(
 ## Context API
 
 Context API를 사용하면 state가 바뀔때마다 함수 전체가 되게된다.
+아래와 같이 컨텍스트를 만들어주고 하위의 컴포넌트에 전달시켜준다.
+
+```
+export const TableContext = createContext({
+  tableData: [],
+  halted: true,
+  dispatch: () => {},
+});
+
+<TableContext.Provider value={value}>
+      <Form />
+      <div>{timer}</div>
+      <Table />
+      <div>{result}</div>
+</TableContext.Provider>
+```
+
+컴포넌트에서 Context를 사용하여서 data를 받아서 사용이 가능
+
+```
+const Table = memo(() => {
+  const { tableData } = useContext(TableContext);
+  return (
+    <table>
+      {Array(tableData.length)
+        .fill()
+        .map((tr, i) => (
+          <Tr rowIndex={i}/>
+        ))}
+    </table>
+  );
+});
+```

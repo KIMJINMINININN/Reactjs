@@ -3,7 +3,7 @@ import {
   CODE,
   TableContext,
   OPEN_CELL,
-  CLICKED_MINE,
+  CLICK_MINE,
   FLAG_CELL,
   QUESTION_CELL,
   NORMALIZE_CELL,
@@ -39,7 +39,7 @@ const getTdStyle = (code) => {
 
 //Text 변경하기
 const getTdText = (code) => {
-  console.log('getTdText');
+  // console.log('getTdText');
   switch (code) {
     case CODE.NORMAL:
       return '';
@@ -76,7 +76,7 @@ const Td = memo(({ rowIndex, cellIndex }) => {
         dispatch({ type: OPEN_CELL, row: rowIndex, cell: cellIndex });
         return;
       case CODE.MINE:
-        dispatch({ type: CLICKED_MINE, row: rowIndex, cell: cellIndex });
+        dispatch({ type: CLICK_MINE, row: rowIndex, cell: cellIndex });
         return;
       default:
         return;
@@ -84,37 +84,34 @@ const Td = memo(({ rowIndex, cellIndex }) => {
   }, [tableData[rowIndex][cellIndex], halted]);
 
   //오른쪽 클릭
-  const onRightClicktd = useCallback(
-    (e) => {
-      if (halted) {
+  const onRightClickTd = useCallback((e) => {
+    e.preventDefault();
+    if (halted) {
+      return;
+    }
+    switch (tableData[rowIndex][cellIndex]) {
+      case CODE.NORMAL:
+      case CODE.MINE:
+        dispatch({ type: FLAG_CELL, row: rowIndex, cell: cellIndex });
         return;
-      }
-      e.preventDefault();
-      switch (tableData[rowIndex[cellIndex]]) {
-        case CODE.NORMAL:
-        case CODE.MINE:
-          dispatch({ type: FLAG_CELL, row: rowIndex, cell: cellIndex });
-          return;
-        case CODE.FLAG_MINE:
-        case CODE.FLAG:
-          dispatch({ type: QUESTION_CELL, row: rowIndex, cell: cellIndex });
-          return;
-        case CODE.QUESTION_MINE:
-        case CODE.QUESTION:
-          dispatch({ type: NORMALIZE_CELL, row: rowIndex, cell: cellIndex });
-          return;
-        default:
-          return;
-      }
-    },
-    [tableData[rowIndex][cellIndex], halted],
-  );
+      case CODE.FLAG_MINE:
+      case CODE.FLAG:
+        dispatch({ type: QUESTION_CELL, row: rowIndex, cell: cellIndex });
+        return;
+      case CODE.QUESTION_MINE:
+      case CODE.QUESTION:
+        dispatch({ type: NORMALIZE_CELL, row: rowIndex, cell: cellIndex });
+        return;
+      default:
+        return;
+    }
+  }, [tableData[rowIndex][cellIndex], halted]);
   //1.useMemo를 하위의 컴포넌트를 만들어서 사용하는 방법
   return (
     <RealTd
       onClickTd={onClickTd}
-      onRightClicktd={onRightClicktd}
-      data={tableData[rowIndex[cellIndex]]}
+      onRightClicktd={onRightClickTd}
+      data={tableData[rowIndex][cellIndex]}
     />
   );
   //2.그냥 useMemo안에다가 넣어서 사용하는 방법
@@ -130,8 +127,8 @@ const Td = memo(({ rowIndex, cellIndex }) => {
   //   );
 });
 
-const RealTd = memo((onClickTd, onRightClicktd, data) => {
-  console.log('real td render');
+const RealTd = memo(({onClickTd, onRightClicktd, data}) => {
+  // console.log('real td render');
   return (
     <td style={getTdStyle(data)} onClick={onClickTd} onContextMenu={onRightClicktd}>
       {getTdText(data)}
