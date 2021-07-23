@@ -1,19 +1,7 @@
-import React, { PureComponent } from 'react';
+  
+import React, { Component } from 'react';
 
-class Try extends PureComponent {
-  constructor(props){
-    super(props);
-    const filtered = this.props.filter(() => {
-
-    });
-
-    //자식이 state로 props 변경해주기
-    this.state = {
-      result: filtered,
-      try: this.props.try,
-    };
-  }
-
+class Try extends Component {
   render() {
     const { tryInfo } = this.props;
     return (

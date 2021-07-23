@@ -781,3 +781,110 @@ const Table = memo(() => {
   );
 });
 ```
+
+
+## Router
+
+Router는 대부분 한페이지에서 다 사용을 하게된다. 여러페이지에서 사용하는게 아니라는것
+
+```
+import { BrowserRouter, HashRouter, Route, Link } from 'react-router-dom';
+
+
+const Games = () => {
+  return (
+    <BrowserRouter>
+    <Link to="/number-baseball">숫자야구</Link>
+    //...
+    <Route path="/number-baseball" component={NumberBaseball} />
+    //...
+    </BrowserRouter>
+  );
+};
+```
+
+- install 참고(router class를 사용하기 위해서 설치)
+npm install --save-dev @babel/plugin-proposal-class-properties
+
+``historyApiFallback: True 라는 Webpack devServer에 추가 참고``
+
+### HashRouter
+검색엔진에 뜨지가 않는다! (서버는 모르고 브라우저만 안다)
+
+### BrwoserRouter
+
+새로고침 했을때 뜨지 않는다!
+-> 서버에 대한 설정이 필요.
+
+{history: {…}, location: {…}, match: {…}, staticContext: undefined}
+history: {length: 5, action: "POP", location: {…}, createHref: ƒ, push: ƒ, …}
+location: {pathname: "/game/index", search: "", hash: "", state: undefined, key: "jgtwo6"}
+match: {path: "/game/:name", url: "/game/index", isExact: true, params: {…}}
+
+history 안에는 react-router의 눈속임을 위한 준비하는 방법들이 있고
+match -> params안에 분기처리 하는 naming이있다.(동적라우터 매칭)
+location은 주소에 대한 정보를 가지고있다.
+
+### 동적라우터 매칭
+```
+<BrowserRouter>
+      {/* React에서는 Link라는 컴포넌트를 a태그 대신해서 사용한다 */}
+      <div>
+        공통부분
+        <Link to="/game/number-baseball?query=10&hello=zerocho&bye=react">숫자야구</Link>
+        &nbsp;
+        <Link to="/game/rock-scissors-paper">가위바위보</Link>
+        &nbsp;
+        <Link to="/game/lotto-generator">로또생성기</Link>
+        &nbsp;
+        <Link to="/game/index">게임 매쳐</Link>
+      </div>
+      <div>
+        <Route path="/game/:name" component={GameMatcher} />
+        {/* <Route path="/number-baseball" component={NumberBaseball} />
+        <Route path="/rock-scissors-paper" component={RSP} />
+        <Route path="/lotto-generator" component={Lotto} />
+        <Route path="/game/:name" component={GameMatcher} /> */}
+      </div>
+    </BrowserRouter>
+```
+
+
+### 쿼리 스트링
+location.search안에 props로 있다
+
+URLSearchParams를 사용하여서 활용할수 있다.
+```
+let urlSearchParams = new URLSearchParams(this.props.location.search.slice(1))
+console.log(urlSearchParams.get('hello'))
+```
+
+### props 넘기는 방법
+``` 
+-기본
+        <Route path="/game/:name" component={GameMatcher} />
+-props
+        <Route path="/game/:name" component={(props) => <GameMatcher {...props} />} /> //비추
+        <Route path="/game/:name" render={(props) => <GameMatcher {...props} />} /> //추천
+```
+
+### Switch
+동적라우팅에서 같은것이 중복되어서 나올 상황이라면 Switch를 사용하면 중복되어서 사용되지 않게 된다.
+```
+<Switch>
+  <Route path="/game/:name" component={GameMatcher} />
+  <Route path="/game/number-baseball" render={(props) => <GameMatcher {...props} />} />
+</Switch>
+```
+
+### exact
+```
+<Switch>
+  {/* <Route path="/game/:name" component={GameMatcher} /> */}
+  path에 /만있는것과 /game/:name/도 똑같이 인식을 한다.
+  그때 동시에 나타나는것을 Switch로해서도 잡히지않을때 exact를 사용해서 path 딱 그부분만
+  맞을대 랜더링 될수있도록 하여야한다.
+  <Route exact path="/" render={(props) => <GameMatcher {...props} />} /> 
+  <Route path="/game/:name/" render={(props) => <GameMatcher {...props} />} />
+</Switch>
+```

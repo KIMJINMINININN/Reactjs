@@ -30,6 +30,8 @@ const reducer = (state, action) => {
     case CLICK_CELL: {
       //불변성이 중요하다.
       const tableData = [...state.tableData];
+      console.log("@@@@@@@@tableData : ", tableData)
+
       tableData[action.row] = [...tableData[action.row]]; //immer라는 라이브러리로 가독성 해결
       tableData[action.row][action.cell] = state.turn;
       return {
@@ -128,7 +130,7 @@ const Tictacto = () => {
   }, [recentCell]);
   return (
     <>
-      <Table onClick={onClickTable} tableData={state.tableData} dispatch={dispatch} />
+      <Table onClick={onClickTable} tableData={tableData} dispatch={dispatch} />
       {state.winner && <div>{state.winner}님의 승리</div>}
     </>
   );

@@ -39,7 +39,6 @@ class Lotto extends Component {
     console.log('timeouts : ', this.timeouts);
     for (let i = 0; i < winNumbers.length - 1; i++) {
       this.timeouts[i] = setTimeout(() => {
-        console.log('this.timeouts[i] : ', this.timeouts[i]);
         this.setState((prevState) => {
           return {
             // winBalls: [winNumbers[i]], 해당하는 state에서는 이전값을 넣어주지 않으면

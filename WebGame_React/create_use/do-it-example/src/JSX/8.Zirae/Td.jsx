@@ -127,10 +127,10 @@ const Td = memo(({ rowIndex, cellIndex }) => {
   //   );
 });
 
-const RealTd = memo(({onClickTd, onRightClicktd, data}) => {
+const RealTd = memo(({onClickTd, onRightClickTd, data}) => {
   // console.log('real td render');
   return (
-    <td style={getTdStyle(data)} onClick={onClickTd} onContextMenu={onRightClicktd}>
+    <td style={getTdStyle(data)} onClick={onClickTd} onContextMenu={onRightClickTd}>
       {getTdText(data)}
     </td>
   );

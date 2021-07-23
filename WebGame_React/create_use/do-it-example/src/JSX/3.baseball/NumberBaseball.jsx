@@ -1,4 +1,4 @@
-/* import React, { Component, createRef } from 'react';
+import React, { Component, createRef } from 'react';
 import Try from './Try';
 
 //숫자 뽑기 함수
@@ -113,9 +113,9 @@ class NumberBaseball extends Component {
   }
 }
 
-export default NumberBaseball; */
-
-
+export default NumberBaseball;
+//#########################################################
+/* 
 import React, { useState, createRef } from 'react';
 import Try from './Try';
 
@@ -208,3 +208,4 @@ const NumberBaseball = () => {
 };
 
 export default NumberBaseball;
+ */
