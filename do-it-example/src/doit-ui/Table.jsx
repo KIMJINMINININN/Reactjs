@@ -1,21 +1,26 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, css, withStylePropTypes } from './withStyles';
+import { withStyles, css, withStylesPropTypes } from './withStyles';
 
-class TableHead extends PureComponent {
+class Table extends PureComponent {
   render() {
-    const { children } = this.props;
-
+    const { styles, children } = this.props;
     return (
-      <thead>
-        {React.Children.map(children, (child) => React.cloneElement(child, { isHeader: true }))}
-      </thead>
+      <table {...css(styles.table)}>
+        {children}
+      </table>
     );
   }
 }
 
-TableHead.propTypes = {
-  children: PropTypes.node,
+Table.propTypes = {
+  ...withStylesPropTypes,
+  children: PropTypes.node.isRequired,
 };
 
-export default TableHead;
+export default withStyles(({ color, unit }) => ({
+  table: {
+    borderCollapse: 'collapse',
+    width: '100%',
+  },
+}))(Table);

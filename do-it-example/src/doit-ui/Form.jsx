@@ -5,7 +5,7 @@ const { Provider, Consumer } = React.createContext({});
 
 class FormProvider extends React.PureComponent {
   static Consumer = Consumer;
-  static getDerivedStateFromProps({ initValues, prevState }) {
+  static getDerivedStateFromProps({ initValues }, prevState) {
     const values = initValues !== prevState.initValues ? initValues : prevState.values;
 
     return {

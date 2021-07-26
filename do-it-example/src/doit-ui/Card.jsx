@@ -1,46 +1,34 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, css, withStylesPropTypes } from './withStyles';
-import Spacing from './Spacing';
-import Text from './Text';
+import Spacing, { propTypes as spacingPropTypes } from './Spacing';
 
-class Toast extends PureComponent {
+class Card extends PureComponent {
   render() {
-    const { message, styles, waring } = this.props;
-
+    const { children, styles, ...spacingProps } = this.props;
     return (
-      <div {...css(styles.overlay)}>
-        <div {...css(styles.wrapper, waring && styles.waring)}>
-          <Spacing vertical={4} horizontal={8}>
-            {message}
-          </Spacing>
-        </div>
+      <div {...css(styles.wrapper)}>
+        <Spacing {...spacingProps}>
+          {children}
+        </Spacing>
       </div>
     );
   }
 }
 
-Toast.propTypes = {
+Card.propTypes = {
+  ...spacingPropTypes,
   ...withStylesPropTypes,
-  waring: PropTypes.bool,
-  message: PropTypes.string,
+  children: PropTypes.node,
 };
 
 export default withStyles(({ depth, unit, color }) => ({
-  overlay: {
-    position: 'fixed',
-    bottom: 0,
-    right: 0,
-    margin: unit * 4,
-  },
   wrapper: {
     ...depth.level1,
     borderRadius: unit,
-    backgroundColor: color.secondary,
-    padding: unit * 2,
+    backgroundColor: color.white,
+    display: 'flex',
+    overflow: 'hidden',
     marginBottom: unit * 4,
   },
-  waring: {
-    backgroundColor: color.error,
-  },
-}))(Toast);
+}))(Card);

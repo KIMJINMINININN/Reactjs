@@ -11,7 +11,7 @@ class Input extends PureComponent {
   handleChange(e) {
     const { name, onChange } = this.props;
     if (onChange) {
-      onChange(name, e.target.value);
+      onChange(name, e.target.value)
     }
   }
   componentDidMount() {
@@ -23,31 +23,52 @@ class Input extends PureComponent {
     this.ref = ref;
   }
   render() {
-    const { errorMessage, label, value, name, type } = this.props;
+    const {
+      errorMessage,
+      label,
+      value,
+      name,
+      type,
+      styles,
+      large,
+      xlarge,
+      small,
+      xsmall,
+    } = this.props;
+
     return (
-      <div className="input-field">
+      <fieldset {...css(styles.wrapper)}>
+        <label
+          htmlFor={`input_${name}`}
+          {...css(
+            styles.label,
+            errorMessage && styles.errorLabel,
+          )}
+        >
+          {errorMessage || label}
+        </label>
         <input
+          {...css(
+            styles.input,
+            errorMessage && styles.error,
+            xsmall && styles.xsmall,
+            small && styles.small,
+            large && styles.large,
+            xlarge && styles.xlarge,
+          )}
           id={`input_${name}`}
-          className={`validate ${errorMessage && 'invalid'}`}
           ref={this.setRef}
           type={type}
           onChange={this.handleChange}
           value={value}
         />
-        <label className="active" htmlFor={`input_${name}`}>
-          {label}
-        </label>
-        {errorMessage && (
-          <span className="helper-text" data-error={errorMessage}>
-            {errorMessage}
-          </span>
-        )}
-      </div>
+      </fieldset>
     );
   }
 }
 
 Input.propTypes = {
+  ...withStylesPropTypes,
   type: PropTypes.oneOf(['text', 'number', 'price']),
   name: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -56,13 +77,13 @@ Input.propTypes = {
   onChange: PropTypes.func,
   autoFocus: PropTypes.bool,
 };
+
 Input.defaultProps = {
-  type: 'text',
-  onChange: () => {},
+  onChange: () => { },
   autoFocus: false,
 };
 
-export default withStyles(({ depth, color, unit, size, lineHeight }) => ({
+export default withStyles(({ depth, unit, color, size, lineHeight }) => ({
   wrapper: {
     border: 0,
     padding: 0,

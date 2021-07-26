@@ -10,3 +10,6 @@ yarn-error.log
 *.njsproj
 *.sln
 do-it-example/src/06/LoadingProviderWithNewContext.jsx
+WebGame_React/create_use
+type_react
+.gitignore
