@@ -3,6 +3,7 @@ dist
 node_modules/
 npm-debug.log
 yarn-error.log
+.next/
 # Editor directories and files
 .idea
 *.suo
@@ -12,4 +13,5 @@ yarn-error.log
 do-it-example/src/06/LoadingProviderWithNewContext.jsx
 WebGame_React/create_use
 type_react
-.gitignore
+.gitignore'
+process.env
